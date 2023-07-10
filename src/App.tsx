@@ -2,6 +2,9 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import "./App.css";
 import Routes from "./routes";
 import { colorScheme } from "./utils";
+import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./redux";
+import { Provider } from "react-redux";
 
 const defaultTheme = createTheme({
   palette: {
@@ -10,15 +13,21 @@ const defaultTheme = createTheme({
     },
     secondary: {
       main: colorScheme.secondary,
-    }
+    },
   },
+});
+
+const store = configureStore({
+  reducer: rootReducer,
 });
 
 function App() {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Routes />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={defaultTheme}>
+        <Routes />
+      </ThemeProvider>
+    </Provider>
   );
 }
 
