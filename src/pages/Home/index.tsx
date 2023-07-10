@@ -25,6 +25,7 @@ import {
 } from "react-router-dom";
 import { logout } from "../../redux/reducers/authSlice";
 import { useAppDispatch } from "../../redux";
+import Profile from "../Profile";
 
 const drawerWidth = 240;
 
@@ -84,15 +85,15 @@ const Home = () => {
             </ListItem>
             <ListItem
               button
-              key="User Management"
+              key="Profile Management"
               component={Link}
-              to="/home/user-management"
-              selected={location.pathname === "/home/user-management"}
+              to="/home/profile-management"
+              selected={location.pathname === "/home/profile-management"}
             >
               <ListItemIcon>
                 <SecurityIcon />
               </ListItemIcon>
-              <ListItemText primary="User Management" />
+              <ListItemText primary="Profile Management" />
             </ListItem>
           </List>
         </div>
@@ -104,7 +105,7 @@ const Home = () => {
         <Routes>
           <Route path="/" element={<h1>Schemes</h1>} />
           <Route path="/schemes" element={<h1>Schemes</h1>} />
-          <Route path="/user-management" element={<h1>User Management</h1>} />
+          <Route path="/profile-management" element={<Profile/>} />
         </Routes>
       </MainContainer>
       <footer
