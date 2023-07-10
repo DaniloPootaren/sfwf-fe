@@ -26,6 +26,7 @@ import {
 import { logout } from "../../redux/reducers/authSlice";
 import { useAppDispatch } from "../../redux";
 import Profile from "../Profile";
+import Schemes from "../Schemes";
 
 const drawerWidth = 240;
 
@@ -33,6 +34,8 @@ const theme = createTheme();
 
 const MainContainer = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(4),
+  overflow: 'scroll',
+  marginBottom: theme.spacing(10),
 }));
 
 const Home = () => {
@@ -104,7 +107,7 @@ const Home = () => {
         </Typography>
         <Routes>
           <Route path="/" element={<h1>Schemes</h1>} />
-          <Route path="/schemes" element={<h1>Schemes</h1>} />
+          <Route path="/schemes" element={<Schemes/>} />
           <Route path="/profile-management" element={<Profile/>} />
         </Routes>
       </MainContainer>
