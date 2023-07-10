@@ -10,54 +10,35 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import MaupassLogo from "../../assets/images/maupass-logo.svg";
-import { login } from "../../api/login";
 import { authenticationAction } from "../../redux/actions";
 import { useAppDispatch } from "../../redux";
+import { useForm, SubmitHandler } from "react-hook-form";
+import Spinner from "../../components/Loader";
+import { useSelector } from "react-redux";
 
 const { loginThunk } = authenticationAction;
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Small Farmers Wellfare Fund
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
   const dispatch = useAppDispatch();
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    try {
-      const response = await login({
-        email: data.get("email") as string,
-        password: data.get("password") as string,
-      });
-      console.log("login response", response);
-    } catch (e) {
-      console.log("error");
-    }
-  };
+  const _state = useSelector((state: any) => state);
+  const {authentication} = _state;
+  const {loading} = authentication;
 
-  React.useEffect(() => {
-    dispatch(
-      loginThunk({
-        email: "danilo.pootaren@gmail.com",
-        password: "D@nilo8424242",
-      })
-    );
-  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    dispatch(loginThunk(data));
+  };
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -105,7 +86,7 @@ export default function Login() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 1 }}
           >
             <TextField
@@ -113,20 +94,26 @@ export default function Login() {
               required
               fullWidth
               id="email"
+              {...register("email", { required: true })}
               label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
+              error={!!errors.email}
+              helperText={errors.email?.message}
             />
             <TextField
               margin="normal"
               required
               fullWidth
+              {...register("password", { required: true })}
               name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -137,6 +124,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={Object.keys(errors).length > 0}
             >
               Sign In
             </Button>
@@ -152,10 +140,10 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid>
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
+      {loading && <Spinner />}
     </Grid>
   );
 }
