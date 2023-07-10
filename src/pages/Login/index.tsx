@@ -1,5 +1,4 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -11,6 +10,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import MaupassLogo from "../../assets/images/maupass-logo.svg";
+import { login } from "../../api/login";
+import { authenticationAction } from "../../redux/actions";
+import { useAppDispatch } from "../../redux";
+
+const { loginThunk } = authenticationAction;
 
 function Copyright(props: any) {
   return (
@@ -31,14 +35,29 @@ function Copyright(props: any) {
 }
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const dispatch = useAppDispatch();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    try {
+      const response = await login({
+        email: data.get("email") as string,
+        password: data.get("password") as string,
+      });
+      console.log("login response", response);
+    } catch (e) {
+      console.log("error");
+    }
   };
+
+  React.useEffect(() => {
+    dispatch(
+      loginThunk({
+        email: "danilo.pootaren@gmail.com",
+        password: "D@nilo8424242",
+      })
+    );
+  }, []);
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -70,7 +89,14 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          <div style={{backgroundColor: 'black', padding: '25px' , borderRadius: '10px', marginBottom: '20px'}}>
+          <div
+            style={{
+              backgroundColor: "black",
+              padding: "25px",
+              borderRadius: "10px",
+              marginBottom: "20px",
+            }}
+          >
             <img src={MaupassLogo} alt="maupass logo" />
           </div>
           <Typography component="h1" variant="h6" mb={5}>
