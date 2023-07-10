@@ -6,7 +6,7 @@ const loginThunk = createAsyncThunk(
   "authentication/login",
   async (payload: LoginPayload, _thunkAPI) => {
     const response = await login(payload);
-    return response.data;
+    return response;
   }
 );
 

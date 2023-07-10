@@ -26,9 +26,8 @@ type Inputs = {
 export default function Login() {
   const dispatch = useAppDispatch();
   const _state = useSelector((state: any) => state);
-  const {authentication} = _state;
-  const {loading} = authentication;
-
+  const { authentication } = _state;
+  const { loading } = authentication;
 
   const {
     register,
@@ -37,7 +36,11 @@ export default function Login() {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    dispatch(loginThunk(data));
+    try {
+      dispatch(loginThunk(data));
+    } catch (e) {
+      console.log("error");
+    }
   };
 
   return (

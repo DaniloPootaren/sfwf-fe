@@ -20,11 +20,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state = initialState;
+      state.data = initialState.data;
+      state.loading = initialState.loading;
     },
   },
   extraReducers: builder => {
     builder.addCase(loginThunk.fulfilled, (state, action) => {
+      // @ts-ignore
       state.data = action.payload;
       state.loading = false;
     });
