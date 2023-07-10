@@ -7,10 +7,36 @@ import {
   CardMedia,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import {
-  ArrowForward,
-  Info,
-} from "@mui/icons-material";
+import { ArrowForward, Info } from "@mui/icons-material";
+import { Scheme } from "../../models";
+import { getImageUrl } from "../../utils";
+
+import { keyframes } from "@mui/system";
+
+const fade = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const Ellipsis = styled("div")`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+`;
+
+
+const Description = styled(Typography)(({ theme }) => ({
+    marginBottom: theme.spacing(2),
+    height: 80,
+    overflow: "hidden",
+    animation: `${fade} 1s linear`,
+  }));
 
 const MyCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
@@ -31,30 +57,29 @@ const Title = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const Description = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-}));
 
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
 }));
 
-const SchemeCard = () => {
+const SchemeCard = (props: { scheme: Scheme }) => {
+  const { scheme } = props;
+  const imageUrl = getImageUrl(scheme?.attributes?.image?.data?.length ? scheme?.attributes?.image?.data[0]?.attributes?.url : '')
+
   return (
     <MyCard>
       <CardMedia
         component="img"
         height="140"
-        image="https://www.eeas.europa.eu/sites/default/files/styles/hero_inside_content2/public/2020/06/23/gcca-mca_rev.jpg?itok=VIT8GgMG"
+        image={imageUrl}
         alt="Image"
       />
       <MyCardContent>
-        <Title variant="h5">Card Title</Title>
-        <Description variant="body2" color="textSecondary">
-          This is a description of the card. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit.
-        </Description>
+      <Title variant="h5">{scheme.attributes.title}</Title>
+      <Description variant="body2" color="textSecondary">
+        <Ellipsis>{scheme.attributes.description}</Ellipsis>
+      </Description>
         <ButtonContainer>
           <Button startIcon={<Info />} variant="outlined" color="primary">
             Learn More

@@ -35,7 +35,7 @@ const theme = createTheme();
 const MainContainer = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(4),
   overflow: 'scroll',
-  marginBottom: theme.spacing(10),
+  height: '100%'
 }));
 
 const Home = () => {
