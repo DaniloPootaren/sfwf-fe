@@ -12,6 +12,7 @@ import { Scheme } from "../../models";
 import { getImageUrl } from "../../utils";
 
 import { keyframes } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 const fade = keyframes`
   0% {
@@ -30,13 +31,12 @@ const Ellipsis = styled("div")`
   -webkit-box-orient: vertical;
 `;
 
-
 const Description = styled(Typography)(({ theme }) => ({
-    marginBottom: theme.spacing(2),
-    height: 80,
-    overflow: "hidden",
-    animation: `${fade} 1s linear`,
-  }));
+  marginBottom: theme.spacing(2),
+  height: 80,
+  overflow: "hidden",
+  animation: `${fade} 1s linear`,
+}));
 
 const MyCard = styled(Card)(({ theme }) => ({
   maxWidth: 400,
@@ -57,7 +57,6 @@ const Title = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-
 const ButtonContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
@@ -65,21 +64,25 @@ const ButtonContainer = styled(Box)(({ theme }) => ({
 
 const SchemeCard = (props: { scheme: Scheme }) => {
   const { scheme } = props;
-  const imageUrl = getImageUrl(scheme?.attributes?.image?.data?.length ? scheme?.attributes?.image?.data[0]?.attributes?.url : '')
+  const imageUrl = getImageUrl(
+    scheme?.attributes?.image?.data?.length
+      ? scheme?.attributes?.image?.data[0]?.attributes?.url
+      : ""
+  );
+  const navigate = useNavigate();
+
+  const handleApplyNowClick = () => {
+    navigate(`/home/application/${scheme.id}`);
+  };
 
   return (
     <MyCard>
-      <CardMedia
-        component="img"
-        height="140"
-        image={imageUrl}
-        alt="Image"
-      />
+      <CardMedia component="img" height="140" image={imageUrl} alt="Image" />
       <MyCardContent>
-      <Title variant="h5">{scheme.attributes.title}</Title>
-      <Description variant="body2" color="textSecondary">
-        <Ellipsis>{scheme.attributes.description}</Ellipsis>
-      </Description>
+        <Title variant="h5">{scheme.attributes.title}</Title>
+        <Description variant="body2" color="textSecondary">
+          <Ellipsis>{scheme.attributes.description}</Ellipsis>
+        </Description>
         <ButtonContainer>
           <Button startIcon={<Info />} variant="outlined" color="primary">
             Learn More
@@ -88,6 +91,7 @@ const SchemeCard = (props: { scheme: Scheme }) => {
             startIcon={<ArrowForward />}
             variant="contained"
             color="primary"
+            onClick={handleApplyNowClick}
           >
             Apply Now
           </Button>

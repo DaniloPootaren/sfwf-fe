@@ -27,6 +27,7 @@ import { logout } from "../../redux/reducers/authSlice";
 import { useAppDispatch } from "../../redux";
 import Profile from "../Profile";
 import Schemes from "../Schemes";
+import Application from "../Application";
 
 const drawerWidth = 240;
 
@@ -109,6 +110,7 @@ const Home = () => {
           <Route path="/" element={<h1>Schemes</h1>} />
           <Route path="/schemes" element={<Schemes/>} />
           <Route path="/profile-management" element={<Profile/>} />
+          <Route path="/application/:id" element={<Application/>} />
         </Routes>
       </MainContainer>
       <footer

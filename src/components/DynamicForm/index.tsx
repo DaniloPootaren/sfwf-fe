@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Grid,
@@ -13,112 +13,13 @@ import {
   Typography,
 } from "@mui/material";
 import { FormLayout } from "../../models";
+import { fetchSchemeTemplateBySchemeId } from "../../api/schemes";
 
-const formLayout: FormLayout = {
-  id: 2,
-  createdAt: "2023-07-11T05:41:41.894Z",
-  updatedAt: "2023-07-11T06:52:38.601Z",
-  terms_and_condition: "template 2",
-  section: [
-    {
-      id: 2,
-      panel_title: "Information Details",
-      text_selection: [
-        {
-          id: 7,
-          label: "Test input",
-        },
-      ],
-      phone_selection: [
-        {
-          id: 1,
-          label: "phone number",
-        },
-      ],
-      number_selection: [
-        {
-          id: 2,
-          label: "Test",
-          min_length: 5,
-          max_length: 0,
-        },
-      ],
-      choice_selection: [
-        {
-          id: 2,
-          label: "Test",
-          choices: [
-            {
-              id: 2,
-              label: "choice 1",
-            },
-            {
-              id: 8,
-              label: "choice 2",
-            },
-            {
-              id: 9,
-              label: "choice 3",
-            },
-            {
-              id: 10,
-              label: "choice 4",
-            },
-          ],
-        },
-        {
-          id: 4,
-          label: null,
-          choices: [],
-        },
-      ],
-    },
-    {
-      id: 4,
-      panel_title: "New Panel ",
-      text_selection: [
-        {
-          id: 13,
-          label: "Enter Range",
-        },
-      ],
-      phone_selection: [
-        {
-          id: 2,
-          label: "Public phone number",
-        },
-      ],
-      number_selection: [
-        {
-          id: 4,
-          label: "Reange",
-          min_length: 5,
-          max_length: 0,
-        },
-      ],
-      choice_selection: [
-        {
-          id: 5,
-          label: "Test",
-          choices: [
-            {
-              id: 11,
-              label: "choice 1",
-            },
-            {
-              id: 12,
-              label: "choice 2",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
-const DynamicForm = () => {
+const DynamicForm = (props: { id?: number }) => {
+  const { id } = props;
   const { register, handleSubmit } = useForm<FormLayout>();
   const [expandedSection, setExpandedSection] = useState<number | false>(0);
+  const [formLayout, setFormLayout] = useState<FormLayout>();
 
   const onSubmit = (data: any) => {
     alert(JSON.stringify(data, null, 2));
@@ -129,9 +30,18 @@ const DynamicForm = () => {
       setExpandedSection(isExpanded ? panel : false);
     };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await fetchSchemeTemplateBySchemeId(id?.toString() as string);
+    setFormLayout(data.data);;
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {formLayout.section.map((section) => (
+      {formLayout?.section.map((section) => (
         <Accordion
           key={section.id}
           expanded={expandedSection === section.id}
@@ -205,7 +115,12 @@ const DynamicForm = () => {
           </AccordionDetails>
         </Accordion>
       ))}
-      <Button type="submit" variant="contained" color="primary" style={{marginLeft: 10}}>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        style={{ marginLeft: 10 }}
+      >
         Submit Application
       </Button>
     </form>
