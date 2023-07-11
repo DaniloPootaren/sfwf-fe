@@ -16,18 +16,32 @@ import { FormLayout } from "../../models";
 import { fetchSchemeTemplateBySchemeId } from "../../api/schemes";
 import { getMaupassVal } from "../../utils";
 import { createApplication } from "../../api/application";
+import TermsAndConditionsModal from "../TermsAndCondition";
+import { useNavigate } from "react-router-dom";
 
 const DynamicForm = (props: { id?: number }) => {
   const { id } = props;
   // @ts-ignore
-  const { register, handleSubmit } = useForm<any>();
+  const { register, handleSubmit, control } = useForm<any>();
   const [expandedSection, setExpandedSection] = useState<number | false>(0);
   const [formLayout, setFormLayout] = useState<FormLayout>();
+  const [openModal, setOpenModal] = useState(false);
+  const navigation = useNavigate();
 
   const onSubmit = async (data: any) => {
+    setOpenModal(true);
+    try {
+      setOpenModal(true);
+    } catch (e) {
+      alert(JSON.stringify(e));
+    }
+  };
+  const _onSubmit = async (data: any) => {
     try {
       await createApplication(data, id);
       alert("Application send successfully");
+      setOpenModal(false);
+      navigation("/home/schemes");
     } catch (e) {
       alert(JSON.stringify(e));
     }
@@ -138,6 +152,12 @@ const DynamicForm = (props: { id?: number }) => {
       >
         Submit Application
       </Button>
+      <TermsAndConditionsModal
+        _open={openModal}
+        terms={formLayout?.terms_and_condition!!}
+        onClose={() => setOpenModal(false)}
+        handleSubmit={()=> _onSubmit(control._formValues)}
+      />
     </form>
   );
 };

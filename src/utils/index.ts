@@ -20,3 +20,11 @@ export const getMaupassVal = (attribute: MaupassProfile) => {
   // @ts-ignore
   return profile[attribute.trim()];
 };
+
+export function replaceWordsWithMaupassName(str: string) {
+  const profile = (store.getState() as any).authentication.data.me as Me;
+  // return str?.replace(/\bI\S*\b/g, `I ${profile.name} ${profile.surname}, `).replace(/\./g, " ") || '';
+  return str?.replace("I ……………………………………………………………………………………………", `I ${profile.name} ${profile.surname}, `).replace(/\./g, "") || '';
+
+
+}
