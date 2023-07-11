@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { FormLayout } from "../../models";
 import { fetchSchemeTemplateBySchemeId } from "../../api/schemes";
+import { getMaupassVal } from "../../utils";
 
 const DynamicForm = (props: { id?: number }) => {
   const { id } = props;
@@ -61,6 +62,7 @@ const DynamicForm = (props: { id?: number }) => {
                       label={field.label}
                       variant="outlined"
                       fullWidth
+                      defaultValue={field.default ? field.default : field.maupass ? getMaupassVal(field.maupass!!) : ''}
                     />
                   </Grid>
                 ))}

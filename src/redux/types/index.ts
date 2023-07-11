@@ -110,3 +110,28 @@ export interface AuthResponse {
     email: string;
   };
 }
+
+export enum MaupassProfile {
+  userName = "userName",
+  name = "name",
+  surname = "surname",
+  surnameAtBirth = "surnameAtBirth",
+  gender = "gender",
+  dateOfBirth = "dateOfBirth",
+  isCitizen = "isCitizen",
+  passportNumber = "passportNumber",
+  nic = "nic",
+  isTwoFactorEnabled = "isTwoFactorEnabled",
+  phoneNumber = "phoneNumber",
+  fixedLineNumber = "fixedLineNumber",
+  address = "address",
+  city = "city",
+  country = "country",
+  nationality = "nationality",
+  state = "state",
+  townVillage = "townVillage",
+  zipCode = "zipCode",
+  subLocalityId = "subLocalityId",
+  townVillageId = "townVillageId",
+  subLocalityName = "subLocalityName",
+}

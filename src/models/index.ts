@@ -1,3 +1,5 @@
+import { MaupassProfile } from "../redux/types";
+
 interface ImageData {
   // @ts-ignore
   data?: any;
@@ -85,6 +87,8 @@ export interface Scheme {
 export interface TextSelection {
   id: number;
   label: string;
+  default?: string;
+  maupass?: MaupassProfile;
 }
 
 export interface PhoneSelection {
