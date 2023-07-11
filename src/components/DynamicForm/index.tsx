@@ -15,15 +15,22 @@ import {
 import { FormLayout } from "../../models";
 import { fetchSchemeTemplateBySchemeId } from "../../api/schemes";
 import { getMaupassVal } from "../../utils";
+import { createApplication } from "../../api/application";
 
 const DynamicForm = (props: { id?: number }) => {
   const { id } = props;
-  const { register, handleSubmit } = useForm<FormLayout>();
+  // @ts-ignore
+  const { register, handleSubmit } = useForm<any>();
   const [expandedSection, setExpandedSection] = useState<number | false>(0);
   const [formLayout, setFormLayout] = useState<FormLayout>();
 
-  const onSubmit = (data: any) => {
-    alert(JSON.stringify(data, null, 2));
+  const onSubmit = async (data: any) => {
+    try {
+      await createApplication(data, id);
+      alert("Application send successfully");
+    } catch (e) {
+      alert(JSON.stringify(e));
+    }
   };
 
   const handleAccordionChange =
@@ -37,7 +44,7 @@ const DynamicForm = (props: { id?: number }) => {
 
   const fetchData = async () => {
     const data = await fetchSchemeTemplateBySchemeId(id?.toString() as string);
-    setFormLayout(data.data);;
+    setFormLayout(data.data);
   };
 
   return (
@@ -58,11 +65,17 @@ const DynamicForm = (props: { id?: number }) => {
                 {section.text_selection.map((field) => (
                   <Grid key={field.id} item xs={12} md={6}>
                     <TextField
-                      name={field.label}
                       label={field.label}
                       variant="outlined"
                       fullWidth
-                      defaultValue={field.default ? field.default : field.maupass ? getMaupassVal(field.maupass!!) : ''}
+                      {...register(field.label, { required: true })}
+                      defaultValue={
+                        field.default
+                          ? field.default
+                          : field.maupass
+                          ? getMaupassVal(field.maupass!!)
+                          : ""
+                      }
                     />
                   </Grid>
                 ))}
@@ -71,10 +84,10 @@ const DynamicForm = (props: { id?: number }) => {
                 {section.phone_selection.map((field) => (
                   <Grid key={field.id} item xs={12} md={6}>
                     <TextField
-                      name={field.label}
                       label={field.label}
                       variant="outlined"
                       fullWidth
+                      {...register(field.label, { required: true })}
                       inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     />
                   </Grid>
@@ -84,11 +97,11 @@ const DynamicForm = (props: { id?: number }) => {
                 {section.number_selection.map((field) => (
                   <Grid key={field.id} item xs={12} md={6}>
                     <TextField
-                      name={field.label}
                       label={field.label}
                       variant="outlined"
                       fullWidth
                       inputProps={{ inputMode: "numeric" }}
+                      {...register(field.label, { required: true })}
                     />
                   </Grid>
                 ))}
