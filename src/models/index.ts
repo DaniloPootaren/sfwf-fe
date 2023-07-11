@@ -81,3 +81,48 @@ export interface Scheme {
     };
   };
 }
+
+export interface TextSelection {
+  id: number;
+  label: string;
+}
+
+export interface PhoneSelection {
+  id: number;
+  label: string;
+}
+
+export interface NumberSelection {
+  id: number;
+  label: string;
+  min_length: number;
+  max_length: number;
+}
+
+export interface Choice {
+  id: number;
+  label: string;
+}
+
+export interface ChoiceSelection {
+  id: number;
+  label: string | null;
+  choices: Choice[];
+}
+
+export interface Section {
+  id: number;
+  panel_title: string;
+  text_selection: TextSelection[];
+  phone_selection: PhoneSelection[];
+  number_selection: NumberSelection[];
+  choice_selection: ChoiceSelection[];
+}
+
+export interface FormLayout {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  terms_and_condition: string;
+  section: Section[];
+}
