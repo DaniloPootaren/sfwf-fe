@@ -33,7 +33,7 @@ const Ellipsis = styled("div")`
 
 const Description = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(2),
-  height: 80,
+  height: 50,
   overflow: "hidden",
   animation: `${fade} 1s linear`,
 }));
@@ -43,18 +43,18 @@ const MyCard = styled(Card)(({ theme }) => ({
   margin: "auto",
   boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
   transition: "0.3s",
-  borderRadius: theme.spacing(0),
+  borderRadius: theme.spacing(1),
   "&:hover": {
     boxShadow: "0 8px 16px 0 rgba(0, 0, 0, 0.2)",
   },
 }));
 
 const MyCardContent = styled(CardContent)(({ theme }) => ({
-  padding: theme.spacing(2),
+  // padding: theme.spacing(2),
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
+  // marginBottom: theme.spacing(2),
 }));
 
 const ButtonContainer = styled(Box)(({ theme }) => ({

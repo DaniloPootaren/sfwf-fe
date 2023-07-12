@@ -20,7 +20,7 @@ const Schemes = () => {
       <h1>Schemes Available</h1>
       <Grid container spacing={3}>
         {schemes?.map((scheme) => (
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={4} sx={{height: '100vh'}}>
             <SchemeCard scheme={scheme} />
           </Grid>
         ))}

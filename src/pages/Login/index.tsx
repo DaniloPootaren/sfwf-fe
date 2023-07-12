@@ -81,7 +81,15 @@ export default function Login() {
               marginBottom: "20px",
             }}
           >
-            <img src={MaupassLogo} alt="maupass logo" />
+            <img
+              src={MaupassLogo}
+              alt="maupass logo"
+              style={{
+                width: "100%",
+                height: "auto",
+                maxWidth: "300px", // Adjust this value as needed
+              }}
+            />
           </div>
           <Typography component="h1" variant="h6" mb={5}>
             Login With Maupass

@@ -1,9 +1,11 @@
+import React from 'react';
 import { styled, createTheme } from "@mui/material/styles";
 import {
   AppBar,
   Container,
   CssBaseline,
   Drawer,
+  Hidden,
   IconButton,
   List,
   ListItem,
@@ -16,6 +18,7 @@ import {
   ExitToApp as LogoutIcon,
   Security as SecurityIcon,
   Settings as SettingsIcon,
+  Menu as MenuIcon,
 } from "@mui/icons-material";
 import {
   Route,
@@ -42,6 +45,11 @@ const MainContainer = styled(Container)(({ theme }) => ({
 const Home = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <div style={{ display: "flex" }}>
@@ -51,6 +59,15 @@ const Home = () => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" noWrap component="div">
             Small Farmers Welfare Fund
           </Typography>
@@ -64,50 +81,98 @@ const Home = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth },
-        }}
-      >
-        <Toolbar />
-        <div style={{ overflow: "auto" }}>
-          <List>
-            <ListItem
-              button
-              key="Schemes"
-              component={Link}
-              to="/home/schemes"
-              selected={location.pathname === "/home/schemes"}
-            >
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Schemes" />
-            </ListItem>
-            <ListItem
-              button
-              key="Profile Management"
-              component={Link}
-              to="/home/profile-management"
-              selected={location.pathname === "/home/profile-management"}
-            >
-              <ListItemIcon>
-                <SecurityIcon />
-              </ListItemIcon>
-              <ListItemText primary="Profile Management" />
-            </ListItem>
-          </List>
-        </div>
-      </Drawer>
+      <nav aria-label="mailbox folders">
+        <Hidden mdUp implementation="js"> {/* Hide the drawer on screens equal to or smaller than md */}
+          <Drawer
+            variant="temporary"
+            anchor="left"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              display: "flex",
+              [`& .MuiDrawer-paper`]: { boxSizing: "border-box", width: drawerWidth },
+            }}
+          >
+            <Toolbar />
+            <div style={{ overflow: "auto" }}>
+              <List>
+                <ListItem
+                  button
+                  key="Schemes"
+                  component={Link}
+                  to="/home/schemes"
+                  selected={location.pathname === "/home/schemes"}
+                >
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Schemes" />
+                </ListItem>
+                <ListItem
+                  button
+                  key="Profile Management"
+                  component={Link}
+                  to="/home/profile-management"
+                  selected={location.pathname === "/home/profile-management"}
+                >
+                  <ListItemIcon>
+                    <SecurityIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile Management" />
+                </ListItem>
+              </List>
+            </div>
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css"> {/* Hide the drawer on screens smaller than sm using CSS */}
+          <Drawer
+            variant="permanent"
+            open
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              [`& .MuiDrawer-paper`]: { boxSizing: "border-box", width: drawerWidth },
+            }}
+          >
+            <Toolbar />
+            <div style={{ overflow: "auto" }}>
+              <List>
+                <ListItem
+                  button
+                  key="Schemes"
+                  component={Link}
+                  to="/home/schemes"
+                  selected={location.pathname === "/home/schemes"}
+                >
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Schemes" />
+                </ListItem>
+                <ListItem
+                  button
+                  key="Profile Management"
+                  component={Link}
+                  to="/home/profile-management"
+                  selected={location.pathname === "/home/profile-management"}
+                >
+                  <ListItemIcon>
+                    <SecurityIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile Management" />
+                </ListItem>
+              </List>
+            </div>
+          </Drawer>
+        </Hidden>
+      </nav>
       <MainContainer maxWidth="lg">
-        <Typography variant="h4" gutterBottom>
-          Main Content
-        </Typography>
+        <div style={{margin: 50}}></div>
         <Routes>
-          <Route path="/" element={<h1>Schemes</h1>} />
+          <Route path="/" element={<Schemes/>} />
           <Route path="/schemes" element={<Schemes/>} />
           <Route path="/profile-management" element={<Profile/>} />
           <Route path="/application/:id" element={<Application/>} />
