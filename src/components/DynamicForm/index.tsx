@@ -18,6 +18,7 @@ import { getMaupassVal } from "../../utils";
 import { createApplication } from "../../api/application";
 import TermsAndConditionsModal from "../TermsAndCondition";
 import { useNavigate } from "react-router-dom";
+import QRcodeComponent from "../QRCode";
 
 const DynamicForm = (props: { id?: number }) => {
   const { id } = props;
@@ -26,6 +27,7 @@ const DynamicForm = (props: { id?: number }) => {
   const [expandedSection, setExpandedSection] = useState<number | false>(0);
   const [formLayout, setFormLayout] = useState<FormLayout>();
   const [openModal, setOpenModal] = useState(false);
+  const [openQRcode, setOpenQRcode] = useState(false);
   const navigation = useNavigate();
 
   const onSubmit = async (data: any) => {
@@ -41,7 +43,7 @@ const DynamicForm = (props: { id?: number }) => {
       await createApplication(data, id);
       alert("Application send successfully");
       setOpenModal(false);
-      navigation("/home/schemes");
+      setOpenQRcode(true);
     } catch (e) {
       alert(JSON.stringify(e));
     }
@@ -156,8 +158,14 @@ const DynamicForm = (props: { id?: number }) => {
         _open={openModal}
         terms={formLayout?.terms_and_condition!!}
         onClose={() => setOpenModal(false)}
-        handleSubmit={()=> _onSubmit(control._formValues)}
+        handleSubmit={() => _onSubmit(control._formValues)}
       />
+      {openQRcode && (
+        <QRcodeComponent handleClose={() => {
+          setOpenQRcode(false)
+          navigation("/home/schemes");
+        }} />
+      )}
     </form>
   );
 };
